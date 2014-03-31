@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using MPI;
 
 namespace ParallelComputing
 {
@@ -28,6 +29,12 @@ namespace ParallelComputing
 			//
 			// TODO: Add constructor code after the InitializeComponent() call.
 			//
+		}
+		
+		/* Запуск программы */
+		void MainFormLoad(object sender, EventArgs e)
+		{
+			
 		}
 	}
 }
