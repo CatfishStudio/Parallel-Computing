@@ -1,7 +1,5 @@
 C:\GIT\ParallelComputing\bin\Debug\ParallelComputing.exe
 C:\GIT\ParallelComputing\bin\Debug\ParallelComputing.pdb
 C:\GIT\ParallelComputing\obj\Debug\ParallelComputing.csprojResolveAssemblyReference.cache
-C:\GIT\ParallelComputing\obj\Debug\ParallelComputing.MainForm.resources
-C:\GIT\ParallelComputing\obj\Debug\ParallelComputing.csproj.GenerateResource.Cache
 C:\GIT\ParallelComputing\obj\Debug\ParallelComputing.exe
 C:\GIT\ParallelComputing\obj\Debug\ParallelComputing.pdb

@@ -2,30 +2,26 @@
  * Сделано в SharpDevelop.
  * Пользователь: Catfish
  * Дата: 31.03.2014
- * Время: 9:39
+ * Время: 11:21
  * 
  * Для изменения этого шаблона используйте Сервис | Настройка | Кодирование | Правка стандартных заголовков.
  */
 using System;
-using System.Windows.Forms;
+using MPI;
 
 namespace ParallelComputing
 {
-	/// <summary>
-	/// Class with program entry point.
-	/// </summary>
-	internal sealed class Program
+	class Program
 	{
-		/// <summary>
-		/// Program entry point.
-		/// </summary>
-		[STAThread]
-		private static void Main(string[] args)
+		public static void Main(string[] args)
 		{
-			Application.EnableVisualStyles();
-			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new MainForm());
+			// вызывается строкой: C:\GIT\ParallelComputing\bin\Debug>"C:\Program Files\Microsoft Compute Cluster Pack\Bin\mpiexec.exe" -n 8 ParallelComputing.exe
+			using (new MPI.Environment(ref args))
+			{
+				Console.WriteLine("Hello, World! from rank " + Communicator.world.Rank
+                  + " (running on " + MPI.Environment.ProcessorName + ")");
+			}
+			
 		}
-		
 	}
 }
