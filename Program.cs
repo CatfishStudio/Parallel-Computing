@@ -19,24 +19,24 @@ namespace ParallelComputing
 						
 			using (new MPI.Environment(ref args))
 			{               
-				int indexI = 9;
-				int indexJ = 9;
-				int[,] array2D = new int[indexI,indexJ];
+				int indexI = 9; // строка
+				int indexJ = 9; // столбец
+				int[,] Matrix = new int[indexI,indexJ];
 				int result = 0;
 				
                 Intracommunicator comm = Communicator.world;
                 
             	if (comm.Rank == 0)
             	{
-            		HeaderShow();
-            		ArrayFill(ref array2D, indexI, indexJ);
+            		HeaderShow(); // отображаем шапку
+            		ArrayFill(ref Matrix, indexI, indexJ); // создаём и показываем исходную матрицу.
 				
             		int IndexRank = 1;
             		for (int i = 0; i < indexI; i++){
 						for (int j = 0; j < indexJ; j++){
-            				int[] arrayObject = new int[2] {i, j};
-            				// Передаём процессу
-            				comm.Send(arrayObject, IndexRank, 0);
+            				int[] coordinate = new int[2] {i, j}; // координата
+            				/* Передаём процессу координату начала массива */
+            				comm.Send(coordinate, IndexRank, 0);
             				
 						}
             			IndexRank++;
@@ -50,12 +50,15 @@ namespace ParallelComputing
             	else // not rank 0
             	{
             		
-            		int[] arrayObject = new int[2];
+            		int[] coordinate = new int[2];
             		// Процесс принимает
-            		comm.Receive(0, 0, ref arrayObject);
-            		for(int i = 0; i < arrayObject.Length; i++)
+            		comm.Receive(0, 0, ref coordinate);
+            		for(int i = 0; i < (coordinate.Length / 2); i++)
 					{
-						Console.Write("{0}\t", arrayObject[i]);
+            			String coord = coordinate[i].ToString() + " : " + coordinate[i+1];
+						Console.Write(coord);
+						Console.WriteLine();
+						Console.WriteLine();
 					}
             		
             		//result = ResultProcessingElements(GetLine(arrayObject[0], array2D));
@@ -74,6 +77,7 @@ namespace ParallelComputing
 			Console.Read();
 		}
 		
+		/* Показать шапку програмы*/
 		public static void HeaderShow()
 		{
 			Console.WriteLine();
@@ -84,6 +88,7 @@ namespace ParallelComputing
 			Console.WriteLine();
 		}
 		
+		/* Инициализация исходного массива */
 		public static void ArrayFill(ref int[,] _array2D, int _i, int _j)
 		{
 			Console.Write("Инициализация массива слечайных чисел:");
@@ -93,17 +98,19 @@ namespace ParallelComputing
 			
 			Random ran = new Random();
 			for (int i = 0; i < _i; i++){
+				Console.Write("Строка:[" + i.ToString() + "] ");
 				for (int j = 0; j < _j; j++){
 					_array2D[i, j] = ran.Next(1, 15);
 					Console.Write("{0}\t", _array2D[i, j]);
 				}
+				Console.WriteLine();
 			}
 			Console.WriteLine();
 			Console.Write("--------------------------------------------------------------------------");
 			Console.WriteLine();
 		}
 			
-		
+		/* Показать результат */
 		public static void ResultShow(int _result)
 		{
 			Console.WriteLine();
