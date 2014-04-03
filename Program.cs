@@ -7,6 +7,7 @@
  * Для изменения этого шаблона используйте Сервис | Настройка | Кодирование | Правка стандартных заголовков.
  */
 using System;
+using System.Linq;
 using MPI;
 
 namespace ParallelComputing
@@ -55,8 +56,10 @@ namespace ParallelComputing
             		comm.Receive(0, 0, ref coordinate);
             		for(int i = 0; i < (coordinate.Length / 2); i++)
 					{
-            			String coord = coordinate[i].ToString() + " : " + coordinate[i+1];
+            			String coord = "Строка: " + coordinate[i].ToString() + " ; Столбец:" + coordinate[i+1];
 						Console.Write(coord);
+						Console.Write("   повторений: ");
+						Console.Write(ResultProcessing(GetLine(coordinate[i], Matrix)).ToString());
 						Console.WriteLine();
 						Console.WriteLine();
 					}
@@ -144,13 +147,13 @@ namespace ParallelComputing
 		}
 		
 		/* Результат обработки */
-		public static int ResultProcessingElements(int[] _line)
+		public static int ResultProcessing(int[] _line)
 		{
-			for(int i = 0; i < _line.Length; i++)
-			{
-				Console.Write("{0}\t", _line[i]);
-			}
-			return 0;
+			//List<int> ages = new List<int> { 21, 46, 46, 55, 17, 21, 55, 55 };
+            //IEnumerable<int> distinctAges = ages.Distinct();
+            IEquatable<int> _result = _line.Distinct().Count();
+           
+            return (int)_result;
 		}
 	}
 }
