@@ -68,7 +68,7 @@ namespace ParallelComputing
 					{
             			String coord = "Строка: " + coordinate[i].ToString() + " ; Столбец:" + coordinate[i+1];
 						Console.Write(coord);
-						Console.Write("   повторений: ");
+						Console.Write(" повторов: ");
 						Console.Write(ResultProcessing(GetLine(coordinate[i], Matrix)).ToString());
 						Console.WriteLine();
 						Console.WriteLine();
@@ -177,15 +177,22 @@ namespace ParallelComputing
             //IEquatable<int> _result = _line.Distinct().Count();
             //return (int)_result;
             
+            int _result = 0;
             Array.Sort(_line); // сортировать.
-            for(int i = 0; i < _line.Length; i++)
-			{
-            	Console.Write(_line[i].ToString());
-            }
-            Console.Write(" | ");
+            
+            //Console.Write("МАССИВ [");
+            //for(int i = 0; i < _line.Length; i++)
+			//{
+            //	Console.Write(_line[i].ToString());
+            //}
+            
             var g = _line.GroupBy(i => i);
-           
-            return g.Count();
+            foreach(var k in g){
+            	if(k.Count() > 2 ) _result++;
+            }
+            //Console.WriteLine(k.Key.ToString() + "[" + k.Count().ToString() + "]");
+            //Console.Write("]");
+            return _result;
 		}
 	}
 }
