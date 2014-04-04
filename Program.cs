@@ -14,24 +14,33 @@ namespace ParallelComputing
 {
 	class Program
 	{
+		public static int[,] Matrix = new int[9,9]{
+			{10,2,6,10,5,8,10,1,9},
+			{1,2,3,4,5,6,7,8,9},
+			{2,2,3,4,5,6,7,8,9},
+			{3,2,3,4,5,6,7,8,9},
+			{4,2,3,4,5,6,7,8,9},
+			{5,2,3,4,5,6,7,8,9},
+			{6,2,3,4,5,6,7,8,9},
+			{7,2,3,4,5,6,7,8,9},
+			{8,2,3,4,5,6,7,8,9}
+		};
+			
 		public static void Main(string[] args)
 		{
 			// вызывается строкой: C:\GIT\ParallelComputing\bin\Debug>"C:\Program Files\Microsoft Compute Cluster Pack\Bin\mpiexec.exe" -n 8 ParallelComputing.exe
-						
 			using (new MPI.Environment(ref args))
 			{               
 				int indexI = 9; // строка
 				int indexJ = 9; // столбец
-				int[,] Matrix = new int[indexI,indexJ];
-				int result = 0;
 				
                 Intracommunicator comm = Communicator.world;
                 
             	if (comm.Rank == 0)
             	{
             		HeaderShow(); // отображаем шапку
-            		ArrayFill(ref Matrix, indexI, indexJ); // создаём и показываем исходную матрицу.
-				
+            		ShowTable(Matrix, indexI, indexJ);
+            	
             		int IndexRank = 1;
             		for (int i = 0; i < indexI; i++){
 						for (int j = 0; j < indexJ; j++){
@@ -51,6 +60,7 @@ namespace ParallelComputing
             	else // not rank 0
             	{
             		
+            		
             		int[] coordinate = new int[2];
             		// Процесс принимает
             		comm.Receive(0, 0, ref coordinate);
@@ -62,16 +72,14 @@ namespace ParallelComputing
 						Console.Write(ResultProcessing(GetLine(coordinate[i], Matrix)).ToString());
 						Console.WriteLine();
 						Console.WriteLine();
+						Console.Write("---------------------------------------------------------------------------");
+						Console.WriteLine();
+						Console.WriteLine();
 					}
             		
             		//result = ResultProcessingElements(GetLine(arrayObject[0], array2D));
             		//comm.Gather(); // записываем результат
             		comm.Barrier(); // барьер.
-            		
-            		
-            		
-            		
-            		
             	}
             	
             	
@@ -92,25 +100,40 @@ namespace ParallelComputing
 		}
 		
 		/* Инициализация исходного массива */
-		public static void ArrayFill(ref int[,] _array2D, int _i, int _j)
+		public static int[,] ArrayFill(int _i, int _j)
+		{
+			
+			Random ran = new Random();
+			int[,] _matrix = new int[_i,_j];
+			for (int i = 0; i < _i; i++){
+				Console.Write("Строка:[" + i.ToString() + "] ");
+				for (int j = 0; j < _j; j++){
+					_matrix[i, j] = ran.Next(1, 15);
+					Console.Write("{0}\t", _matrix[i, j]);
+				}
+				Console.WriteLine();
+			}
+			return _matrix;
+		}
+		
+		/* Показат иследуемый массив */
+		public static void ShowTable(int[,] _matrix, int _i, int _j)
 		{
 			Console.Write("Инициализация массива слечайных чисел:");
 			Console.WriteLine();
 			Console.Write("---------------------------------------------------------------------------");
 			Console.WriteLine();
-			
-			Random ran = new Random();
 			for (int i = 0; i < _i; i++){
 				Console.Write("Строка:[" + i.ToString() + "] ");
 				for (int j = 0; j < _j; j++){
-					_array2D[i, j] = ran.Next(1, 15);
-					Console.Write("{0}\t", _array2D[i, j]);
+					Console.Write("{0}\t", _matrix[i, j]);
 				}
 				Console.WriteLine();
-			}
+			}			
 			Console.WriteLine();
 			Console.Write("--------------------------------------------------------------------------");
 			Console.WriteLine();
+			
 		}
 			
 		/* Показать результат */
@@ -151,9 +174,18 @@ namespace ParallelComputing
 		{
 			//List<int> ages = new List<int> { 21, 46, 46, 55, 17, 21, 55, 55 };
             //IEnumerable<int> distinctAges = ages.Distinct();
-            IEquatable<int> _result = _line.Distinct().Count();
+            //IEquatable<int> _result = _line.Distinct().Count();
+            //return (int)_result;
+            
+            Array.Sort(_line); // сортировать.
+            for(int i = 0; i < _line.Length; i++)
+			{
+            	Console.Write(_line[i].ToString());
+            }
+            Console.Write(" | ");
+            var g = _line.GroupBy(i => i);
            
-            return (int)_result;
+            return g.Count();
 		}
 	}
 }
