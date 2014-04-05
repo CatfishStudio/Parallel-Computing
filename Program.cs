@@ -16,19 +16,21 @@ namespace ParallelComputing
 	{
 		public static int[,] Matrix = new int[9,9]{
 			{10,2,6,10,5,8,10,1,9},
-			{1,2,3,4,5,6,7,8,9},
+			{1,20,3,4,5,20,7,8,20},
 			{2,2,3,4,5,6,7,8,9},
-			{3,2,3,4,5,6,7,8,9},
-			{4,2,3,4,5,6,7,8,9},
-			{5,2,3,4,5,6,7,8,9},
-			{6,2,3,4,5,6,7,8,9},
-			{7,2,3,4,5,6,7,8,9},
-			{8,2,3,4,5,6,7,8,9}
+			{40,30,30,30,5,40,40,8,9},
+			{50,2,3,50,5,50,7,50,9},
+			{60,2,60,4,5,70,70,8,9},
+			{80,80,3,90,80,6,90,8,90},
+			{95,2,95,4,5,95,7,8,9},
+			{10,10,1,10,10,1,10,1,10}
 		};
+		public static int[] Result = new int[9];
 			
 		public static void Main(string[] args)
 		{
 			// вызывается строкой: C:\GIT\ParallelComputing\bin\Debug>"C:\Program Files\Microsoft Compute Cluster Pack\Bin\mpiexec.exe" -n 8 ParallelComputing.exe
+			
 			using (new MPI.Environment(ref args))
 			{               
 				int indexI = 9; // строка
@@ -52,9 +54,10 @@ namespace ParallelComputing
             			IndexRank++;
 					}
             		
-            		//ResultShow(result);
-            		
+            		comm.Gather(-1, 0, ref Result); // записываем результат
             		comm.Barrier(); // барьер.
+            		ResultShow(Result); // Показать результат
+            		
             		
             	}
             	else // not rank 0
@@ -62,29 +65,19 @@ namespace ParallelComputing
             		
             		
             		int[] coordinate = new int[2];
+            		int _result = 0;
             		// Процесс принимает
             		comm.Receive(0, 0, ref coordinate);
             		for(int i = 0; i < (coordinate.Length / 2); i++)
 					{
-            			String coord = "Строка: " + coordinate[i].ToString() + " ; Столбец:" + coordinate[i+1];
-						Console.Write(coord);
-						Console.Write(" повторов: ");
-						Console.Write(ResultProcessing(GetLine(coordinate[i], Matrix)).ToString());
-						Console.WriteLine();
-						Console.WriteLine();
-						Console.Write("---------------------------------------------------------------------------");
-						Console.WriteLine();
-						Console.WriteLine();
-					}
+            			_result = ResultProcessing(GetLine(coordinate[i], Matrix));
+            			
+            		}
             		
-            		//result = ResultProcessingElements(GetLine(arrayObject[0], array2D));
-            		//comm.Gather(); // записываем результат
+            		comm.Gather(_result, 0, ref Result); // записываем результат
             		comm.Barrier(); // барьер.
             	}
-            	
-            	
-            	
-			}
+           	}
 			Console.Read();
 		}
 		
@@ -97,23 +90,6 @@ namespace ParallelComputing
 			Console.Write("АВТОР: студент ВНУ, гр. МТз-401, Сомов Е.П.");
 			Console.WriteLine();
 			Console.WriteLine();
-		}
-		
-		/* Инициализация исходного массива */
-		public static int[,] ArrayFill(int _i, int _j)
-		{
-			
-			Random ran = new Random();
-			int[,] _matrix = new int[_i,_j];
-			for (int i = 0; i < _i; i++){
-				Console.Write("Строка:[" + i.ToString() + "] ");
-				for (int j = 0; j < _j; j++){
-					_matrix[i, j] = ran.Next(1, 15);
-					Console.Write("{0}\t", _matrix[i, j]);
-				}
-				Console.WriteLine();
-			}
-			return _matrix;
 		}
 		
 		/* Показат иследуемый массив */
@@ -137,25 +113,18 @@ namespace ParallelComputing
 		}
 			
 		/* Показать результат */
-		public static void ResultShow(int _result)
+		public static void ResultShow(int[] _result)
 		{
 			Console.WriteLine();
 			Console.Write("ЗАДАЧА: Посчитать количество элементов встречающихся в массиве больше двух раз.");
 			Console.WriteLine();
-			Console.Write("РЕЗУЛЬТАТ: " + _result.ToString());
+			Console.Write("РЕЗУЛЬТАТ: ");
 			Console.WriteLine();
-			Console.WriteLine();
-		}
-		
-		/* Получить столбец */
-		public static int[] GetColumn(int idColumn, int[,] M)
-		{
-			int[] _result = new int[M.GetLength(0)];
-			for(int i = 0; i < _result.Length; i++)
+			for(int i = 1; i < _result.Length; i++)
 			{
-				_result[i] = M[i, idColumn];
+				Console.WriteLine("Строка [" + i.ToString() + "] повторов: " + _result[i].ToString());
 			}
-			return _result;
+			Console.WriteLine();
 		}
 		
 		/* Получить строку */
@@ -172,26 +141,13 @@ namespace ParallelComputing
 		/* Результат обработки */
 		public static int ResultProcessing(int[] _line)
 		{
-			//List<int> ages = new List<int> { 21, 46, 46, 55, 17, 21, 55, 55 };
-            //IEnumerable<int> distinctAges = ages.Distinct();
-            //IEquatable<int> _result = _line.Distinct().Count();
-            //return (int)_result;
-            
-            int _result = 0;
+			int _result = 0;
             Array.Sort(_line); // сортировать.
-            
-            //Console.Write("МАССИВ [");
-            //for(int i = 0; i < _line.Length; i++)
-			//{
-            //	Console.Write(_line[i].ToString());
-            //}
             
             var g = _line.GroupBy(i => i);
             foreach(var k in g){
             	if(k.Count() > 2 ) _result++;
             }
-            //Console.WriteLine(k.Key.ToString() + "[" + k.Count().ToString() + "]");
-            //Console.Write("]");
             return _result;
 		}
 	}
