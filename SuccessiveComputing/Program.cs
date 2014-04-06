@@ -37,6 +37,8 @@ namespace SuccessiveComputing
           	}
 			
             ResultShow(Result);
+            AmdahlResult(1, 1); // Крайние случаи в значениях f соответствуют полностью последовательным (f=1)
+            
 			Console.Write("Press any key to continue . . . ");
 			Console.ReadKey(true);
 		}
@@ -109,5 +111,17 @@ namespace SuccessiveComputing
             }
             return _result;
 		}
+		
+		public static void AmdahlResult(int _p, double _f)
+		{
+			double _S = 0;
+			double _d = _f + (1 - _f);
+			_S = 1 / (_d / _p);
+			Console.WriteLine();
+			Console.Write("Максимальное ускорение по закону Амдаля (S=1 / (f+(1-f)/p) равно: ");
+			Console.Write(_S.ToString());
+			Console.WriteLine();
+		}
+		
 	}
 }

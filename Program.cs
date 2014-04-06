@@ -35,10 +35,10 @@ namespace ParallelComputing
 			{               
 				int indexI = 9; // строка
 				int indexJ = 9; // столбец
-				
+								
                 Intracommunicator comm = Communicator.world;
                 
-            	if (comm.Rank == 0)
+                if (comm.Rank == 0)
             	{
             		HeaderShow(); // отображаем шапку
             		ShowTable(Matrix, indexI, indexJ);
@@ -57,13 +57,11 @@ namespace ParallelComputing
             		comm.Gather(-1, 0, ref Result); // записываем результат
             		comm.Barrier(); // барьер.
             		ResultShow(Result); // Показать результат
-            		
+            		AmdahlResult(comm.Size, 0); // Крайние случаи в значениях f соответствуют полностью параллельным (f=0)
             		
             	}
             	else // not rank 0
             	{
-            		
-            		
             		int[] coordinate = new int[2];
             		int _result = 0;
             		// Процесс принимает
@@ -148,6 +146,16 @@ namespace ParallelComputing
             	if(k.Count() > 2 ) _result++;
             }
             return _result;
+		}
+		
+		public static void AmdahlResult(int _p, double _f)
+		{
+			double _S = 0;
+			double _d = _f + (1 - _f);
+			_S = 1 / (_d / _p);
+			Console.WriteLine();
+			Console.Write("Максимальное ускорение по закону Амдаля (S=1 / (f+(1-f)/p) равно: ");
+			Console.Write(_S.ToString());
 		}
 	}
 }
