@@ -1,0 +1,14 @@
+C:\Program Code\C#\TestMethods\bin\Debug\TestMethods.exe
+C:\Program Code\C#\TestMethods\bin\Debug\TestMethods.pdb
+C:\Program Code\C#\TestMethods\obj\Debug\TestMethods.csprojResolveAssemblyReference.cache
+C:\Program Code\C#\TestMethods\obj\Debug\TestMethods.MainForm.resources
+C:\Program Code\C#\TestMethods\obj\Debug\TestMethods.csproj.GenerateResource.Cache
+C:\Program Code\C#\TestMethods\obj\Debug\TestMethods.exe
+C:\Program Code\C#\TestMethods\obj\Debug\TestMethods.pdb
+C:\GIT\ParallelComputing\TestMethods\bin\Debug\TestMethods.exe
+C:\GIT\ParallelComputing\TestMethods\bin\Debug\TestMethods.pdb
+C:\GIT\ParallelComputing\TestMethods\obj\Debug\TestMethods.csprojResolveAssemblyReference.cache
+C:\GIT\ParallelComputing\TestMethods\obj\Debug\TestMethods.MainForm.resources
+C:\GIT\ParallelComputing\TestMethods\obj\Debug\TestMethods.csproj.GenerateResource.Cache
+C:\GIT\ParallelComputing\TestMethods\obj\Debug\TestMethods.exe
+C:\GIT\ParallelComputing\TestMethods\obj\Debug\TestMethods.pdb

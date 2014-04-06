@@ -1,16 +1,15 @@
 ﻿/*
  * Сделано в SharpDevelop.
  * Пользователь: Somov Evgeniy
- * Дата: 31.03.2014
- * Время: 11:21
+ * Дата: 06.04.2014
+ * Время: 8:48
  * 
  * Для изменения этого шаблона используйте Сервис | Настройка | Кодирование | Правка стандартных заголовков.
  */
 using System;
 using System.Linq;
-using MPI;
 
-namespace ParallelComputing
+namespace SuccessiveComputing
 {
 	class Program
 	{
@@ -19,72 +18,34 @@ namespace ParallelComputing
 			{1,20,3,4,5,20,7,8,20},
 			{2,2,3,4,5,6,7,8,9},
 			{40,30,30,30,5,40,40,8,9},
-			{50,2,3,50,5,50,7,50,9},
+			{50,2,3,50,5,50,7,7,9},
 			{60,2,60,4,5,70,70,8,9},
 			{80,80,3,90,80,6,90,8,90},
 			{95,2,95,4,5,95,7,8,9},
 			{10,10,1,10,10,1,10,1,10}
 		};
 		public static int[] Result = new int[9];
-			
+		
 		public static void Main(string[] args)
 		{
-			// вызывается строкой: C:\GIT\ParallelComputing\bin\Debug>"C:\Program Files\Microsoft Compute Cluster Pack\Bin\mpiexec.exe" -n 8 ParallelComputing.exe
-			
-			using (new MPI.Environment(ref args))
-			{               
-				int indexI = 9; // строка
-				int indexJ = 9; // столбец
-				
-                Intracommunicator comm = Communicator.world;
-                
-            	if (comm.Rank == 0)
-            	{
-            		HeaderShow(); // отображаем шапку
-            		ShowTable(Matrix, indexI, indexJ);
+			HeaderShow(); // отображаем шапку
+            ShowTable(Matrix, 9, 9);
+            		
+			for (int i = 0; i < 9; i++){
             	
-            		int IndexRank = 1;
-            		for (int i = 0; i < indexI; i++){
-						for (int j = 0; j < indexJ; j++){
-            				int[] coordinate = new int[2] {i, j}; // координата
-            				/* Передаём процессу координату начала массива */
-            				comm.Send(coordinate, IndexRank, 0);
-            				
-						}
-            			IndexRank++;
-					}
-            		
-            		comm.Gather(-1, 0, ref Result); // записываем результат
-            		comm.Barrier(); // барьер.
-            		ResultShow(Result); // Показать результат
-            		
-            		
-            	}
-            	else // not rank 0
-            	{
-            		
-            		
-            		int[] coordinate = new int[2];
-            		int _result = 0;
-            		// Процесс принимает
-            		comm.Receive(0, 0, ref coordinate);
-            		for(int i = 0; i < (coordinate.Length / 2); i++)
-					{
-            			_result = ResultProcessing(GetLine(coordinate[i], Matrix));
-            		}
-            		
-            		comm.Gather(_result, 0, ref Result); // записываем результат
-            		comm.Barrier(); // барьер.
-            	}
-           	}
-			Console.Read();
+            	Result[i] = ResultProcessing(GetLine(i, Matrix));
+          	}
+			
+            ResultShow(Result);
+			Console.Write("Press any key to continue . . . ");
+			Console.ReadKey(true);
 		}
 		
 		/* Показать шапку програмы*/
 		public static void HeaderShow()
 		{
 			Console.WriteLine();
-			Console.Write("ПРОГРАММА: Параллельные вычисления.");
+			Console.Write("ПРОГРАММА: Последовательныt вычисления.");
 			Console.WriteLine();
 			Console.Write("АВТОР: студент ВНУ, гр. МТз-401, Сомов Е.П.");
 			Console.WriteLine();
@@ -108,9 +69,8 @@ namespace ParallelComputing
 			Console.WriteLine();
 			Console.Write("--------------------------------------------------------------------------");
 			Console.WriteLine();
-			
 		}
-			
+		
 		/* Показать результат */
 		public static void ResultShow(int[] _result)
 		{
@@ -121,7 +81,7 @@ namespace ParallelComputing
 			Console.WriteLine();
 			for(int i = 1; i < _result.Length; i++)
 			{
-				Console.WriteLine("Процесс [" + i.ToString() + "] найдено повторов: " + _result[i].ToString());
+				Console.WriteLine("Строка [" + i.ToString() + "] найдено повторов: " + _result[i].ToString());
 			}
 			Console.WriteLine();
 		}

@@ -1,0 +1,5 @@
+C:\GIT\ParallelComputing\SuccessiveComputing\bin\Debug\SuccessiveComputing.exe
+C:\GIT\ParallelComputing\SuccessiveComputing\bin\Debug\SuccessiveComputing.pdb
+C:\GIT\ParallelComputing\SuccessiveComputing\obj\Debug\SuccessiveComputing.csprojResolveAssemblyReference.cache
+C:\GIT\ParallelComputing\SuccessiveComputing\obj\Debug\SuccessiveComputing.exe
+C:\GIT\ParallelComputing\SuccessiveComputing\obj\Debug\SuccessiveComputing.pdb

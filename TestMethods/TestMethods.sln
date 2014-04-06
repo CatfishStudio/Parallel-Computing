@@ -1,0 +1,18 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+# SharpDevelop 4.3
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMethods", "TestMethods.csproj", "{CB213518-7335-4422-860F-A8AEADC9F54C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CB213518-7335-4422-860F-A8AEADC9F54C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB213518-7335-4422-860F-A8AEADC9F54C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB213518-7335-4422-860F-A8AEADC9F54C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB213518-7335-4422-860F-A8AEADC9F54C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+EndGlobal
